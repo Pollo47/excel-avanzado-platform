@@ -1,5 +1,4 @@
-@'
-import { mysqlTable, int, varchar, text, boolean, timestamp, json, index } from 'drizzle-orm/mysql-core';
+﻿import { mysqlTable, int, varchar, text, boolean, timestamp, json, index } from 'drizzle-orm/mysql-core';
 import { users } from './users';
 
 export const excelModules = mysqlTable('excel_modules', {
@@ -76,5 +75,3 @@ export const excelAccessRequests = mysqlTable('excel_access_requests', {
   processedAt: timestamp('processed_at'),
   notes: text('notes'),
 });
-'@ | Out-File -FilePath db/schema/excel.ts -Encoding utf8
-}));

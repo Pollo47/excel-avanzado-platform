@@ -1,5 +1,4 @@
-@'
-import { mysqlTable, int, varchar, boolean, timestamp } from 'drizzle-orm/mysql-core';
+﻿import { mysqlTable, int, varchar, boolean, timestamp } from 'drizzle-orm/mysql-core';
 
 export const users = mysqlTable('users', {
   id: int('id').primaryKey().autoincrement(),
@@ -14,4 +13,3 @@ export const users = mysqlTable('users', {
 
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
-'@ | Out-File -FilePath db/schema/users.ts -Encoding utf8

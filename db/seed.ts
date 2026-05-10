@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import { getDb } from '../api/queries/connection';
 import { users, accessKeys, excelModules, excelUnits, excelParagraphs, excelExercises, excelQuizQuestions, excelUserProgress, excelAccessRequests } from './schema';
-import { hash } from 'bcryptjs';
+import bcrypt from 'bcryptjs';
 
 // ==================================================
 // DEFINICIÓN DE LOS 7 MÓDULOS (contenido completo)
@@ -863,7 +863,7 @@ async function seed() {
   await db.delete(users);
 
   // Crear usuario administrador
-  const adminPassword = await hash('admin123', 10);
+  const adminPassword = await bcrypt.hash('admin123', 10);
   const [admin] = await db.insert(users).values({
     email: 'admin@excelacademy.com',
     name: 'Administrador',
@@ -874,13 +874,13 @@ async function seed() {
   console.log('✅ Administrador creado con email: admin@excelacademy.com, clave: admin123');
 
   // Crear clave de acceso de demostración
-  const demoKey = 'DEMO1234';
-  await db.insert(accessKeys).values({
-    keyCode: demoKey,
-    type: 'individual',
-    entityName: 'Usuario Demo',
-    used: false,
-  });
+const demoKey = 'DEMO1234';
+await db.insert(accessKeys).values({
+  keyCode: demoKey,
+  type: 'individual',
+  institution_name: 'Usuario Demo',
+  used: false,
+});
   console.log(`✅ Clave demo generada: ${demoKey}`);
 
   // Insertar módulos, unidades, párrafos, ejercicios y preguntas
