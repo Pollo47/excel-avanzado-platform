@@ -1,0 +1,11 @@
+{
+  "schema": "./db/schema",
+  "out": "./drizzle",
+  "dialect": "mysql",
+  "dbCredentials": {
+    "url": "mysql://zvHSE7RKJmbVnLg.root:B5UFl9G8Dyer1nxx@gateway01.us-east-1.prod.aws.tidbcloud.com:4000/iaacademy",
+    "ssl": {
+      "rejectUnauthorized": false
+    }
+  }
+}
