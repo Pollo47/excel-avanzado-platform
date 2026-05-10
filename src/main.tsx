@@ -1,17 +1,14 @@
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Layout />, // Layout ya no tiene Router adentro, así que NO habrá error
-    children: [
-      { path: "/", element: <Home /> },
-      { path: "/login", element: <Login /> },
-      // ... tus otras rutas
-    ],
-  },
-]);
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { RouterProvider } from 'react-router-dom';
+import { router } from './router'; // Importamos el router único de router.tsx
+import { TRPCProvider } from './providers/trpc';
+import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <RouterProvider router={router} /> 
+    <TRPCProvider>
+      <RouterProvider router={router} />
+    </TRPCProvider>
   </React.StrictMode>
 );
