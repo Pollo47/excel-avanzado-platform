@@ -1,14 +1,17 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { TRPCProvider } from './providers/trpc';
-import { RouterProvider } from 'react-router-dom';
-import { router } from './router';
-import './index.css';
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Layout />, // Layout ya no tiene Router adentro, así que NO habrá error
+    children: [
+      { path: "/", element: <Home /> },
+      { path: "/login", element: <Login /> },
+      // ... tus otras rutas
+    ],
+  },
+]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <TRPCProvider>
-      <RouterProvider router={router} />
-    </TRPCProvider>
+    <RouterProvider router={router} /> 
   </React.StrictMode>
 );
