@@ -1,5 +1,5 @@
 import { useAuth } from './useAuth';
-import { trpc } from '@/providers/trpc';
+import { trpc } from '../providers/trpc';
 
 export function useExcelAuth() {
   const { user, isLoading } = useAuth();
