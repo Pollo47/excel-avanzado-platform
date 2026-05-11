@@ -1,33 +1,32 @@
 import { serve } from '@hono/node-server';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
-import { appRouter } from './routers'; // Importa tu router
-import { fetchHandler } from '@trpc/server'; // Usamos el fetchHandler estándar de v11
+import { appRouter } from './routers'; 
+// CAMBIO AQUÍ: Importamos desde la subcarpeta /adapters/fetch
+import { fetchHandler } from '@trpc/server/adapters/fetch'; 
 
-// 1. Inicializamos la aplicación Hono
 const app = new Hono();
 
-// 2. Configuramos CORS
+// 1. CORS
 app.use('/api/*', cors());
 
-// 3. Definimos la ruta de la API
+// 2. Manejador de la API
 app.all('/api/trpc/*', async (c) => {
-  // En tRPC v11, usamos el fetchHandler que es compatible con Hono
   return await fetchHandler({
     opts: { 
       router: appRouter, 
-      createContext: () => ({}) // Aquí puedes agregar el contexto de DB si lo necesitas
+      createContext: () => ({}) 
     },
     request: c.req.raw,
   });
 });
 
-// 4. Ruta de salud (Health Check)
+// 3. Health Check
 app.get('/', (c) => {
   return c.text('Excel Academy API is running 🚀');
 });
 
-// 5. Arrancamos el servidor
+// 4. Servidor
 const port = process.env.PORT || 10000;
 console.log(`🚀 Server starting on port ${port}...`);
 
