@@ -1,4 +1,4 @@
-import { trpc } from '@/providers/trpc';
+import { trpc } from '../providers/trpc';
 import { useEffect } from 'react';
 
 export function useAuth() {
