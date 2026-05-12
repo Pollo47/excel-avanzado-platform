@@ -2,7 +2,7 @@ import { serve } from '@hono/node-server';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { appRouter } from './routers'; 
-import { fetchHTTPResponse } from '@trpc/server'; // <--- ESTA es la función correcta en v11
+import { fetchRequestHandler } from '@trpc/server/adapters/fetch';
 
 const app = new Hono();
 
