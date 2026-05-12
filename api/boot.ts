@@ -11,16 +11,28 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const port = process.env.PORT || 10000;
 
-// 1. Middlewares básicos (SIEMPRE PRIMERO)
+// 1. Middlewares básicos
 app.use(cors());
 app.use(express.json());
 
-// 2. Rutas de API y Salud (Siguen después de los middlewares)
+// 2. Rutas de API y Salud
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
+/**
+ * CORRECCIÓN MAESTRA: createContext
+ * Aquí agregamos el "Polyfill" para que req.headers.get() funcione en Express.
+ */
 const createContext = async ({ req, res }: any) => {
+  // ESTO ES LO QUE ARREGLA EL ERROR "headers.get is not a function"
+  if (req.headers && typeof req.headers.get !== 'function') {
+    req.headers.get = function (name: string) {
+      const key = name.toLowerCase();
+      return this[key] || null;
+    };
+  }
+
   return {
     req,
     res,
@@ -33,11 +45,10 @@ app.use('/api/trpc', createExpressMiddleware({
   createContext,
 }));
 
-// 3. Archivos estáticos (SÓLO si no coincidió con las rutas de arriba)
+// 3. Archivos estáticos
 app.use(express.static(path.join(__dirname, '../dist')));
 
-// 4. El "Atrapa-todo" (SIEMPRE AL FINAL)
-// Esto sirve el index.html para que React Router maneje las rutas internas
+// 4. Atrapa-todo
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
