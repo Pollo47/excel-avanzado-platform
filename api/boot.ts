@@ -7,23 +7,31 @@ import { readFile } from 'fs/promises';
 
 const app = new Hono();
 
-// CORS
+// 1. CORS (solo API)
 app.use('/api/*', cors());
 
-// tRPC
+// 2. tRPC (DEBE IR ANTES del frontend)
 app.use('/api/trpc/*', trpcServer({
   router: appRouter,
   createContext: () => ({}),
 }));
 
-// Servir frontend (versión manual)
+// 3. Health check (también antes)
+app.get('/health', (c) => c.text('OK'));
+
+// 4. Servir frontend (SOLO para rutas que NO son API)
 app.get('/*', async (c) => {
+  // No interfieras con las rutas de API
+  if (c.req.path.startsWith('/api')) {
+    return c.text('Not found', 404);
+  }
+  
   try {
     // Si es un archivo estático (JS, CSS, etc.)
     if (c.req.path.includes('.')) {
       const file = await readFile(`./dist${c.req.path}`);
       const ext = c.req.path.split('.').pop();
-      const contentType = {
+      const contentType: Record<string, string> = {
         'js': 'text/javascript',
         'css': 'text/css',
         'html': 'text/html',
@@ -42,9 +50,6 @@ app.get('/*', async (c) => {
     return c.text('File not found', 404);
   }
 });
-
-// Health check
-app.get('/health', (c) => c.text('OK'));
 
 const port = process.env.PORT || 10000;
 console.log(`🚀 Server starting on port ${port}...`);
