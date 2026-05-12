@@ -2,7 +2,7 @@ import { serve } from '@hono/node-server';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { appRouter } from './routers'; 
-import { fetchRequestHandler } from '@trpc/server/adapters/fetch';
+import { createTRPCProxyClient, httpBatchLink } from '@trpc/server';
 
 const app = new Hono();
 
