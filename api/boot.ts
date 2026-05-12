@@ -4,51 +4,60 @@ import { cors } from 'hono/cors';
 import { trpcServer } from '@hono/trpc-server';
 import { appRouter } from './routers';
 import { readFile } from 'fs/promises';
+import { existsSync } from 'fs';
 
 const app = new Hono();
 
-// 1. CORS
+// CORS
 app.use('*', cors());
 
-// 2. tRPC API (todas las rutas que empiezan con /api)
-app.route('/api/trpc', trpcServer({
+// tRPC - IMPORTANTE: usar app.use con comodín
+app.use('/api/trpc/*', trpcServer({
   router: appRouter,
   createContext: () => ({}),
 }));
 
-// 3. Health check
+// Health check
 app.get('/health', (c) => c.text('OK'));
 
-// 4. Servir archivos estáticos del frontend solo si no es API
-app.get('*', async (c) => {
-  // Si la ruta empieza con /api, no la manejamos aquí
-  if (c.req.path.startsWith('/api')) {
+// Servir frontend (solo si existe la carpeta dist)
+app.get('/*', async (c) => {
+  const path = c.req.path;
+  
+  // No interferir con API
+  if (path.startsWith('/api')) {
     return c.text('API endpoint not found', 404);
   }
   
   try {
-    // Intentar servir archivos estáticos desde dist
-    const filePath = c.req.path === '/' ? '/index.html' : c.req.path;
-    const file = await readFile(`./dist${filePath}`);
-    const ext = filePath.split('.').pop();
-    const contentType: Record<string, string> = {
-      'js': 'text/javascript',
-      'css': 'text/css',
-      'html': 'text/html',
-      'json': 'application/json',
-      'png': 'image/png',
-      'jpg': 'image/jpeg',
-      'svg': 'image/svg+xml',
-    };
-    return c.body(file, { headers: { 'Content-Type': contentType[ext] || 'text/plain' } });
-  } catch (error) {
-    // Si el archivo no existe, servir index.html para SPA
-    try {
-      const html = await readFile('./dist/index.html', 'utf-8');
-      return c.html(html);
-    } catch {
-      return c.text('Frontend not built yet', 404);
+    // Intentar servir archivo estático
+    const filePath = path === '/' ? '/index.html' : path;
+    const fullPath = `./dist${filePath}`;
+    
+    if (existsSync(fullPath)) {
+      const file = await readFile(fullPath);
+      const ext = filePath.split('.').pop();
+      const contentType: Record<string, string> = {
+        'js': 'text/javascript',
+        'css': 'text/css',
+        'html': 'text/html',
+        'json': 'application/json',
+        'png': 'image/png',
+        'jpg': 'image/jpeg',
+        'svg': 'image/svg+xml',
+      };
+      return c.body(file, { 
+        headers: { 
+          'Content-Type': contentType[ext || 'html'] || 'text/plain' 
+        } 
+      });
     }
+    
+    // Si no es archivo, servir index.html (SPA)
+    const html = await readFile('./dist/index.html', 'utf-8');
+    return c.html(html);
+  } catch (error) {
+    return c.text('Frontend not found', 404);
   }
 });
 
