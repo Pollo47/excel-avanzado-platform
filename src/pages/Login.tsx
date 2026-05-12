@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
 import { LogIn, Mail, KeyRound, UserPlus, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -10,21 +9,39 @@ export default function Login() {
   const [name, setName] = useState('');
   const [isRegistering, setIsRegistering] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const result = await login(email, keyCode, isRegistering ? name : undefined);
-      if (result.success) {
+      // Usamos fetch directamente (evita problemas con tRPC)
+      const response = await fetch('/api/trpc/auth.login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          keyCode: keyCode.toUpperCase(),
+          name: isRegistering ? name : undefined,
+        }),
+      });
+
+      const data = await response.json();
+
+      // La respuesta de tRPC viene dentro de result.data
+      const result = data?.result?.data;
+
+      if (result?.success) {
+        localStorage.setItem('excel_token', result.token);
         toast.success(isRegistering ? '¡Registro exitoso!' : '¡Bienvenido de vuelta!');
         navigate('/excel');
       } else {
-        toast.error(result.message || 'Error al ingresar');
+        toast.error(result?.message || 'Error al ingresar. Verifica tus datos.');
       }
     } catch (error) {
+      console.error(error);
       toast.error('Error de conexión. Intenta de nuevo.');
     } finally {
       setIsLoading(false);
