@@ -1,8 +1,11 @@
 import { serve } from '@hono/node-server';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
+import { serveStatic } from '@hono/node-server/serve-static';
 import { trpcServer } from '@hono/trpc-server';
 import { appRouter } from './routers';
+import { readFile } from 'fs/promises';
+import { join } from 'path';
 
 const app = new Hono();
 
@@ -18,12 +21,24 @@ app.use(
   })
 );
 
-// 3. Health Check
+// 3. Servir archivos estáticos del frontend (¡NUEVO!)
+app.use('/*', serveStatic({
+  root: './dist',
+  path: (c) => {
+    // Si la ruta no tiene extensión, asumimos que es una ruta de React Router
+    if (!c.req.path.includes('.')) {
+      return 'index.html';
+    }
+    return c.req.path;
+  }
+}));
+
+// 4. Health Check
 app.get('/', (c) => {
   return c.text('Excel Academy API is running 🚀');
 });
 
-// 4. Arranque del servidor (SIN .then)
+// 5. Arranque del servidor
 const port = process.env.PORT || 10000;
 
 console.log(`🚀 Server starting on port ${port}...`);
