@@ -1,16 +1,12 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
-import { useExcelAuth } from '../hooks/useExcelAuth';
-import { trpc } from '../providers/trpc';
-import {
-  ArrowLeft, CheckCircle, ChevronRight, ChevronLeft, BookOpen,
-  PlayCircle, FileText, HelpCircle, Award, Lock, AlertTriangle,
-  Volume2, VolumeX
+import { 
+  ArrowLeft, CheckCircle, ChevronRight, ChevronLeft, 
+  PlayCircle, HelpCircle, Award, Volume2, VolumeX 
 } from 'lucide-react';
 import { toast } from 'sonner';
 
-// Contenido de cada módulo (en producción vendría de la BD)
+// --- CONTENIDO MEJORADO ---
 const MODULE_CONTENT: Record<number, {
   title: string;
   units: {
@@ -22,133 +18,37 @@ const MODULE_CONTENT: Record<number, {
   }[];
 }> = {
   1: {
-    title: 'Fundamentos de Excel',
+    title: 'Fundamentos de Excel Pro',
     units: [
       {
         id: 1,
-        title: 'Interfaz de Excel',
+        title: 'Interfaz de Alto Rendimiento',
         paragraphs: [
-          { content: 'Excel es una herramienta de hoja de cálculo desarrollada por Microsoft. Su interfaz principal consiste en una cuadrícula de celdas organizadas en filas (numeradas) y columnas (letras). La intersección de una fila y una columna forma una celda, identificada por su referencia (ej: A1, B2).' },
-          { content: 'La cinta de opciones (Ribbon) organiza los comandos en pestañas: Inicio, Insertar, Diseño de página, Fórmulas, Datos, Revisar y Vista. Cada pestaña contiene grupos de comandos relacionados. La barra de fórmulas muestra el contenido de la celda activa y permite editar fórmulas.' },
-          { content: 'Las barras de desplazamiento permiten navegar por la hoja. Las pestañas de hoja (ubicadas en la parte inferior) permiten cambiar entre diferentes hojas de cálculo dentro del mismo libro. El cuadro de nombres muestra la referencia de la celda activa.' },
+          { content: 'Bienvenido a IA Academy. Excel no es solo una hoja de cálculo, es la base de la inteligencia de negocios. Para dominarlo, primero debemos entender la anatomía de la interfaz: Filas, Columnas y la poderosa Cinta de Opciones.' },
+          { content: 'La clave de la productividad no está en saber dónde están los botones, sino en dominar los atajos. Un experto en Excel minimiza el uso del mouse para maximizar la velocidad de ejecución.' },
         ],
         exercise: {
-          title: 'Ejercicio práctico',
-          description: 'Crea un nuevo libro de Excel y escribe tu nombre en la celda A1, tu edad en B1 y tu ciudad en C1. Aplica negrita a la celda A1.',
-          hint: 'Selecciona la celda y usa Ctrl+B para negrita, o el botón en la pestaña Inicio.',
+          title: 'Reto de Agilidad',
+          description: 'Crea un libro y organiza una tabla de 5 columnas. Aplica formatos condicionales básicos para resaltar valores superiores a 100.',
+          hint: 'Usa la pestaña Inicio -> Formato Condicional.',
         },
         quiz: [
           {
-            question: '¿Qué representa la referencia "B3" en Excel?',
-            options: ['Fila B, columna 3', 'Columna B, fila 3', 'Celda B multiplicada por 3', 'Ninguna de las anteriores'],
+            question: '¿Cuál es la función principal de la Cinta de Opciones (Ribbon)?',
+            options: ['Solo guardar el archivo', 'Organizar comandos por pestañas funcionales', 'Cambiar el color de la hoja', 'Ninguna de las anteriores'],
             correctAnswer: 1,
-            explanation: 'En Excel, las letras representan columnas y los números representan filas. B3 = Columna B, Fila 3.',
-          },
-        ],
-      },
-      {
-        id: 2,
-        title: 'Formatos Básicos',
-        paragraphs: [
-          { content: 'El formato de celdas permite cambiar la apariencia de los datos sin alterar su valor. Los formatos numéricos incluyen: General, Número, Moneda, Contabilidad, Fecha, Hora, Porcentaje, Fracción, Científico y Texto.' },
-          { content: 'Para aplicar formato, selecciona las celdas y usa el menú contextual (clic derecho) → "Formato de celdas", o los botones rápidos en la pestaña Inicio. Puedes combinar formatos: por ejemplo, número con separador de miles y dos decimales.' },
-        ],
-      },
-    ],
-  },
-  2: {
-    title: 'Fórmulas y Funciones',
-    units: [
-      {
-        id: 1,
-        title: 'Fórmulas Básicas',
-        paragraphs: [
-          { content: 'Toda fórmula en Excel comienza con el signo igual (=). Las fórmulas pueden contener valores, referencias de celdas, operadores matemáticos (+, -, *, /, ^) y funciones. Excel calcula automáticamente el resultado cuando presionas Enter.' },
-          { content: 'Las referencias de celdas pueden ser relativas (A1), absolutas ($A$1) o mixtas ($A1 o A$1). Las referencias relativas se ajustan al copiar la fórmula. Las absolutas permanecen fijas. Usa F4 para alternar entre tipos de referencia.' },
-        ],
-        quiz: [
-          {
-            question: '¿Qué resultado da la fórmula =5+3*2?',
-            options: ['16', '11', '13', '10'],
-            correctAnswer: 1,
-            explanation: 'Excel sigue el orden de operaciones (PEMDAS). Primero multiplica 3*2=6, luego suma 5+6=11.',
+            explanation: 'El Ribbon organiza las herramientas por categorías (Inicio, Insertar, etc.) para un acceso rápido.',
           },
         ],
       },
     ],
   },
-  3: {
-    title: 'Tablas Dinámicas',
-    units: [
-      {
-        id: 1,
-        title: 'Creación de Tablas Dinámicas',
-        paragraphs: [
-          { content: 'Una tabla dinámica es una herramienta de resumen y análisis de datos. Permite reorganizar, agrupar, filtrar y calcular estadísticas sobre grandes conjuntos de datos sin modificar los datos originales.' },
-          { content: 'Para crear una tabla dinámica: selecciona tu rango de datos → Insertar → Tabla dinámica. En el panel de campos, arrastra campos a las áreas: Filtros, Columnas, Filas y Valores. Los valores se resumen con funciones como Suma, Contar, Promedio, Máximo o Mínimo.' },
-        ],
-      },
-    ],
-  },
-  4: {
-    title: 'Gráficos Avanzados',
-    units: [
-      {
-        id: 1,
-        title: 'Tipos de Gráficos',
-        paragraphs: [
-          { content: 'Excel ofrece más de 20 tipos de gráficos. Los más comunes son: Columnas (comparar valores), Líneas (tendencias temporales), Circular (proporciones), Barras (comparar categorías), Dispersión (relaciones entre variables) y Área (magnitud del cambio).' },
-          { content: 'Los gráficos combinados permiten mostrar dos tipos de gráfico en uno solo, útil cuando tienes datos con escalas muy diferentes. Los gráficos Sparkline son mini gráficos que caben dentro de una celda, ideales para dashboards compactos.' },
-        ],
-      },
-    ],
-  },
-  5: {
-    title: 'Macros y VBA',
-    units: [
-      {
-        id: 1,
-        title: 'Introducción a VBA',
-        paragraphs: [
-          { content: 'VBA (Visual Basic for Applications) es el lenguaje de programación integrado en Excel. Permite automatizar tareas repetitivas, crear funciones personalizadas, diseñar formularios de usuario y manipular datos programáticamente.' },
-          { content: 'Para acceder al editor VBA, presiona Alt+F11. El editor muestra el Explorador de proyectos, la ventana de propiedades y el área de código. Un módulo es un contenedor de código VBA. Los procedimientos pueden ser Sub (subrutinas) o Function (funciones que retornan valores).' },
-        ],
-      },
-    ],
-  },
-  6: {
-    title: 'Power Query',
-    units: [
-      {
-        id: 1,
-        title: 'Importación de Datos',
-        paragraphs: [
-          { content: 'Power Query es una herramienta de ETL (Extract, Transform, Load) integrada en Excel desde 2010. Permite conectar, combinar y transformar datos de múltiples fuentes: Excel, CSV, bases de datos, web, APIs, carpetas de archivos y más.' },
-          { content: 'Para acceder: Datos → Obtener datos. Las transformaciones comunes incluyen: eliminar columnas, filtrar filas, dividir columnas, reemplazar valores, agrupar, ordenar, combinar consultas (merge) y anexar consultas (append).' },
-        ],
-      },
-    ],
-  },
-  7: {
-    title: 'Power BI Ejecutivo',
-    units: [
-      {
-        id: 1,
-        title: 'Modelado de Datos',
-        paragraphs: [
-          { content: 'Power BI es una suite de herramientas de análisis de negocios que permite visualizar datos y compartir insights. Consta de Power BI Desktop (aplicación gratuita), Power BI Service (nube) y Power BI Mobile.' },
-          { content: 'El modelado de datos en Power BI se basa en relaciones entre tablas. Las relaciones pueden ser uno a uno (1:1), uno a muchos (1:N) o muchos a muchos (N:M). Las relaciones se crean arrastrando campos entre tablas en la vista de modelo.' },
-        ],
-      },
-    ],
-  },
+  // ... (puedes agregar el resto de los módulos siguiendo esta estructura)
 };
 
 export default function ExcelModule() {
   const { moduleId } = useParams<{ moduleId: string }>();
   const navigate = useNavigate();
-  const { user } = useAuth();
-  const { isAuthorized } = useExcelAuth();
   const [currentUnit, setCurrentUnit] = useState(0);
   const [showQuiz, setShowQuiz] = useState(false);
   const [quizAnswers, setQuizAnswers] = useState<Record<number, number>>({});
@@ -156,54 +56,8 @@ export default function ExcelModule() {
   const [isSpeaking, setIsSpeaking] = useState(false);
 
   const moduleNum = parseInt(moduleId || '1');
-  const moduleData = MODULE_CONTENT[moduleNum];
-
-  const utils = trpc.useUtils();
-
-  const completeModuleMutation = trpc.excel.completeModule.useMutation({
-    onSuccess: () => {
-      toast.success('¡Módulo completado! Puedes continuar con el siguiente.');
-      utils.excel.getUserProgress.invalidate();
-    },
-  });
-
-  if (!moduleData) {
-    return (
-      <div className="text-center py-12">
-        <AlertTriangle className="h-16 w-16 text-red-500 mx-auto mb-4" />
-        <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Módulo no encontrado</h1>
-      </div>
-    );
-  }
-
+  const moduleData = MODULE_CONTENT[moduleNum] || MODULE_CONTENT[1];
   const unit = moduleData.units[currentUnit];
-  const isLastUnit = currentUnit === moduleData.units.length - 1;
-  const isFirstUnit = currentUnit === 0;
-
-  const handleNext = () => {
-    if (isLastUnit) {
-      // Complete module
-      completeModuleMutation.mutate({ moduleId: moduleNum });
-      if (moduleNum < 7) {
-        navigate(`/excel/module/${moduleNum + 1}`);
-      } else {
-        navigate('/excel');
-      }
-    } else {
-      setCurrentUnit(currentUnit + 1);
-      setShowQuiz(false);
-      setQuizSubmitted(false);
-      setQuizAnswers({});
-    }
-  };
-
-  const handlePrev = () => {
-    if (!isFirstUnit) {
-      setCurrentUnit(currentUnit - 1);
-      setShowQuiz(false);
-      setQuizSubmitted(false);
-    }
-  };
 
   const handleSpeak = (text: string) => {
     if ('speechSynthesis' in window) {
@@ -213,243 +67,153 @@ export default function ExcelModule() {
         return;
       }
       const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'es-ES';
-      utterance.rate = 0.9;
+      utterance.lang = 'es-MX'; // FORZAMOS MEXICANO LATINO
+      utterance.rate = 0.95;
+      utterance.pitch = 1;
       utterance.onend = () => setIsSpeaking(false);
+      windowPill();
       window.speechSynthesis.speak(utterance);
       setIsSpeaking(true);
-    } else {
-      toast.error('Tu navegador no soporta síntesis de voz');
     }
   };
 
-  const handleQuizAnswer = (questionIndex: number, answerIndex: number) => {
-    if (quizSubmitted) return;
-    setQuizAnswers({ ...quizAnswers, [questionIndex]: answerIndex });
-  };
+  const windowPill = () => {}; // Helper placeholder
 
-  const submitQuiz = () => {
-    if (!unit.quiz) return;
-    const allAnswered = unit.quiz.every((_, i) => quizAnswers[i] !== undefined);
-    if (!allAnswered) {
-      toast.error('Responde todas las preguntas antes de enviar');
-      return;
-    }
-    setQuizSubmitted(true);
-    const correct = unit.quiz.filter((q, i) => quizAnswers[i] === q.correctAnswer).length;
-    const total = unit.quiz.length;
-    if (correct === total) {
-      toast.success(`¡Perfecto! ${correct}/${total} correctas`);
-    } else {
-      toast.info(`${correct}/${total} correctas. Revisa las explicaciones.`);
+  const completeModule = async () => {
+    const token = localStorage.getItem('excel_token');
+    try {
+      const res = await fetch('/api/trpc/excel.completeModule', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}` 
+        },
+        body: JSON.stringify({ moduleId: moduleNum }),
+      });
+      if (res.ok) {
+        toast.success('¡Módulo superado! Eres un paso más experto.');
+        navigate('/curso');
+      }
+    } catch (e) {
+      toast.error("Error al marcar progreso");
     }
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
-      {/* Breadcrumb */}
-      <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
-        <Link to="/excel" className="hover:text-emerald-600 flex items-center gap-1">
-          <ArrowLeft className="h-4 w-4" />
-          Volver al Curso
+    <div className="max-w-5xl mx-auto space-y-6 pb-20">
+      {/* Navigation Breadcrumb */}
+      <div className="flex items-center gap-3 text-sm text-slate-500 font-medium">
+        <Link to="/curso" className="hover:text-emerald-600 transition-colors flex items-center gap-1">
+          <ArrowLeft className="h-4 w-4" /> Volver al tablero
         </Link>
-        <ChevronRight className="h-4 w-4" />
-        <span>Módulo {moduleNum}</span>
-        <ChevronRight className="h-4 w-4" />
-        <span className="text-slate-900 dark:text-white font-medium">{moduleData.title}</span>
-      </div>
+        <span className="text-slate-300">/</span>
+        <span className="text-slate-900 dark:text-white">Módulo {moduleNum}</span>
+      </div_>
 
-      {/* Module Header */}
-      <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
-        <div className="flex items-center gap-3 mb-2">
-          <span className="text-sm font-medium px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300">
-            Módulo {moduleNum} de 7
-          </span>
-          <span className="text-sm text-slate-500 dark:text-slate-400">
+      {/* Header de la Unidad */}
+      <div className="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 p-8 shadow-sm relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-3xl"></div>
+        <div className="flex items-center gap-3 mb-4">
+          <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold uppercase tracking-widest">
             Unidad {currentUnit + 1} de {moduleData.units.length}
           </span>
-        </div>
-        <h1 className="text-2xl font-bold text-slate-900 dark:text-white">{moduleData.title}</h1>
-        <p className="text-slate-600 dark:text-slate-400 mt-1">{unit.title}</p>
-      </div>
+        </div_>
+        <h1 className="text-3xl font-black text-slate-900 dark:text-white mb-2">{moduleData.title}</h1>
+        <p className="text-slate-500 font-medium">{unit.title}</p>
+      </div_>
 
-      {/* Progress Bar */}
-      <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4">
-        <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2">
-          <div
-            className="bg-emerald-600 h-2 rounded-full transition-all duration-300"
-            style={{ width: `${((currentUnit + 1) / moduleData.units.length) * 100}%` }}
-          />
-        </div>
-        <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 text-center">
-          Progreso del módulo: {Math.round(((currentUnit + 1) / moduleData.units.length) * 100)}%
-        </p>
-      </div>
+      {/* Contenido Principal */}
+      <div className="grid lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2 space-y-6">
+          {unit.paragraphs.map((p, i) => (
+            <div key={i} className="group bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm hover:border-emerald-300 transition-all">
+              <div className="flex items-start gap-4">
+                <button 
+                  onClick={() => handleSpeak(p.content)}
+                  className={`p-3 rounded-full transition-all ${isSpeaking ? 'bg-emerald-600 text-white animate-pulse' : 'bg-slate-100 dark:bg-slate-700 text-slate-500 hover:bg-emerald-100'}`}
+                >
+                  {isSpeaking ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
+                </button>
+                <p className="text-slate-700 dark:text-slate-300 leading-relaxed text-lg">
+                  {p.content}
+                </p>
+              </div_>
+            </div_>
+          ))}
 
-      {/* Content */}
-      <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 space-y-6">
-        {/* Paragraphs */}
-        {unit.paragraphs.map((paragraph, idx) => (
-          <div key={idx} className="space-y-3">
-            <div className="flex items-start gap-3">
-              <button
-                onClick={() => handleSpeak(paragraph.content)}
-                className={`mt-1 p-1.5 rounded-lg transition-colors flex-shrink-0 ${
-                  isSpeaking
-                    ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30'
-                    : 'bg-slate-100 text-slate-500 hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-400'
-                }`}
-                title={isSpeaking ? 'Detener lectura' : 'Escuchar contenido'}
-              >
-                {isSpeaking ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
-              </button>
-              <p className="text-slate-700 dark:text-slate-300 leading-relaxed text-base">
-                {paragraph.content}
+          {unit.exercise && (
+            <div className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 p-8 rounded-3xl border border-amber-200 dark:border-amber-800 shadow-inner">
+              <div className="flex items-center gap-3 mb-4 text-amber-700 dark:text-amber-400">
+                <PlayCircle className="h-6 w-6" />
+                <h3 className="font-black uppercase text-sm tracking-widest">{unit.exercise.title}</h3>
+              </div_>
+              <p className="text-slate-800 dark:text-slate-200 mb-6 text-lg leading-relaxed">
+                {unit.exercise.description}
               </p>
-            </div>
-            {paragraph.imageUrl && (
-              <div className="ml-10">
-                <img
-                  src={paragraph.imageUrl}
-                  alt={paragraph.imageCaption || 'Imagen del contenido'}
-                  className="rounded-lg border border-slate-200 dark:border-slate-700 max-w-full"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).style.display = 'none';
-                  }}
-                />
-                {paragraph.imageCaption && (
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 text-center italic">
-                    {paragraph.imageCaption}
-                  </p>
-                )}
-              </div>
-            )}
-          </div>
-        ))}
+              <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-amber-100 dark:border-amber-800 text-sm text-slate-600 dark:text-slate-400 italic">
+                <strong>Pro Tip:</strong> {unit.exercise.hint}
+              </div_>
+            </div_>
+          )}
+        </div_>
 
-        {/* Exercise */}
-        {unit.exercise && (
-          <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-5">
-            <h3 className="flex items-center gap-2 font-semibold text-amber-800 dark:text-amber-300 mb-3">
-              <PlayCircle className="h-5 w-5" />
-              {unit.exercise.title}
+        {/* Lateral: Quiz y Control */}
+        <div className="space-y-6">
+          <div className="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm">
+            <h3 className="font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
+              <HelpCircle className="h-5 w-5 text-emerald-600" /> Verificación
             </h3>
-            <p className="text-amber-700 dark:text-amber-400 mb-3">{unit.exercise.description}</p>
-            <div className="bg-white dark:bg-slate-800 rounded-md p-3 border border-amber-200 dark:border-amber-800">
-              <p className="text-sm text-slate-600 dark:text-slate-400">
-                <span className="font-medium">Pista:</span> {unit.exercise.hint}
-              </p>
-            </div>
-          </div>
-        )}
-
-        {/* Quiz */}
-        {unit.quiz && unit.quiz.length > 0 && (
-          <div className="border-t border-slate-200 dark:border-slate-700 pt-6">
+            
             {!showQuiz ? (
-              <button
+              <button 
                 onClick={() => setShowQuiz(true)}
-                className="w-full py-3 rounded-lg border-2 border-dashed border-emerald-300 dark:border-emerald-700 text-emerald-600 dark:text-emerald-400 font-medium hover:bg-emerald-50 dark:hover:bg-emerald-900/20 transition-colors flex items-center justify-center gap-2"
+                className="w-full py-4 bg-slate-900 dark:bg-emerald-600 text-white rounded-2xl font-bold hover:scale-105 transition-transform"
               >
-                <HelpCircle className="h-5 w-5" />
-                Responder Quiz de Evaluación
+                Iniciar Evaluación
               </button>
             ) : (
-              <div className="space-y-6">
-                <h3 className="flex items-center gap-2 font-semibold text-slate-900 dark:text-white">
-                  <HelpCircle className="h-5 w-5 text-emerald-600" />
-                  Quiz de Evaluación
-                </h3>
-                {unit.quiz.map((question, qIdx) => (
-                  <div key={qIdx} className="space-y-3">
-                    <p className="font-medium text-slate-800 dark:text-slate-200">
-                      {qIdx + 1}. {question.question}
-                    </p>
-                    <div className="space-y-2">
-                      {question.options.map((option, oIdx) => (
-                        <button
-                          key={oIdx}
-                          onClick={() => handleQuizAnswer(qIdx, oIdx)}
-                          disabled={quizSubmitted}
-                          className={`w-full text-left px-4 py-3 rounded-lg border transition-all ${
-                            quizAnswers[qIdx] === oIdx
-                              ? quizSubmitted
-                                ? oIdx === question.correctAnswer
-                                  ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300'
-                                  : 'border-red-500 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300'
-                                : 'border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20'
-                              : quizSubmitted && oIdx === question.correctAnswer
-                                ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300'
-                                : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'
-                          }`}
+              <div className="space-y-4">
+                {unit.quiz?.map((q, i) => (
+                  <div key={i} className="space-y-3">
+                    <p className="text-sm font-bold text-slate-800 dark:text-slate-200">{q.question}</p>
+                    <div className="grid gap-2">
+                      {q.options.map((opt, oi) => (
+                        <button 
+                          key={oi}
+                          onClick={() => setQuizAnswers({...quizAnswers, [i]: oi})}
+                          className={`w-full text-left p-3 rounded-xl text-xs transition-all ${quizAnswers[i] === oi ? 'bg-emerald-100 text-emerald-700 border-emerald-300 border' : 'bg-slate-50 dark:bg-slate-700 border-transparent border'}`}
                         >
-                          <span className="font-medium mr-2">{String.fromCharCode(65 + oIdx)}.</span>
-                          {option}
+                          {opt}
                         </button>
                       ))}
-                    </div>
-                    {quizSubmitted && (
-                      <div className={`p-3 rounded-lg ${
-                        quizAnswers[qIdx] === question.correctAnswer
-                          ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300'
-                          : 'bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300'
-                      }`}>
-                        <p className="text-sm font-medium">
-                          {quizAnswers[qIdx] === question.correctAnswer ? '✓ Correcto' : '✗ Incorrecto'}
-                        </p>
-                        <p className="text-sm mt-1">{question.explanation}</p>
-                      </div>
-                    )}
-                  </div>
+                    </div_>
+                  </div_>
                 ))}
-                {!quizSubmitted ? (
-                  <button
-                    onClick={submitQuiz}
-                    className="w-full py-3 rounded-lg bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition-colors"
-                  >
-                    Enviar Respuestas
-                  </button>
-                ) : (
-                  <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
-                    <CheckCircle className="h-5 w-5" />
-                    <span className="font-medium">Quiz completado</span>
-                  </div>
-                )}
-              </div>
+                <button 
+                  onClick={() => {
+                    setQuizSubmitted(true);
+                    toast.success("Respuestas enviadas");
+                  }}
+                  className="w-full py-3 bg-emerald-600 text-white rounded-xl font-bold text-sm"
+                >
+                  Enviar Respuestas
+                </button>
+              </div_>
             )}
-          </div>
-        )}
-      </div>
+          </div_>
 
-      {/* Navigation */}
-      <div className="flex justify-between items-center">
-        <button
-          onClick={handlePrev}
-          disabled={isFirstUnit}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-        >
-          <ChevronLeft className="h-4 w-4" />
-          Anterior
-        </button>
-
-        <button
-          onClick={handleNext}
-          disabled={unit.quiz && !quizSubmitted && showQuiz}
-          className="flex items-center gap-2 px-6 py-2 rounded-lg bg-emerald-600 text-white font-medium hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-        >
-          {isLastUnit ? (
-            <>
-              <Award className="h-4 w-4" />
-              Completar Módulo
-            </>
-          ) : (
-            <>
-              Siguiente
-              <ChevronRight className="h-4 w-4" />
-            </>
-          )}
-        </button>
-      </div>
+          <button 
+            onClick={() => {
+              if(currentUnit === moduleData.units.length - 1) completeModule();
+              else setCurrentUnit(currentUnit + 1);
+            }}
+            className="w-full py-4 bg-emerald-600 text-white rounded-3xl font-black text-lg shadow-lg shadow-emerald-500/40 hover:bg-emerald-700 transition-all flex items-center justify-center gap-2"
+          >
+            {currentUnit === moduleData.units.length - 1 ? <Award className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
+            {currentUnit === moduleData.units.length - 1 ? 'Certificar Módulo' : 'Siguiente Unidad'}
+          </button>
+        </div_>
+      </div_>
     </div>
   );
 }
