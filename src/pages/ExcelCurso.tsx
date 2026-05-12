@@ -103,7 +103,6 @@ export default function ExcelCurso() {
       }
 
       try {
-        // 1. Verificar Usuario
         const authRes = await fetch('/api/trpc/auth.me', {
           headers: { 'Authorization': `Bearer ${token}` }
         });
@@ -116,7 +115,6 @@ export default function ExcelCurso() {
         }
         setUser(authData.result.data);
 
-        // 2. Obtener Progreso
         const progRes = await fetch('/api/trpc/excel.getUserProgress', {
           headers: { 'Authorization': `Bearer ${token}` }
         });
@@ -162,7 +160,7 @@ export default function ExcelCurso() {
   );
 
   return (
-    <div className="max-w-7xl mx-auto space-y-8 pb-20">
+    <div className="max-w-7xl mx-auto space-y-8 pb-12">
       {/* Header Corporativo */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
         <div className="space-y-2">
@@ -210,7 +208,6 @@ export default function ExcelCurso() {
 
       {activeTab === 'modules' ? (
         <div className="space-y-8">
-          {/* Alerta de Certificación Final */}
           {completedCount === totalModules && (
             <div className="bg-gradient-to-r from-amber-50 to-yellow-100 dark:from-amber-900/20 dark:to-amber-800/20 border border-amber-200 rounded-2xl p-8 text-center shadow-lg">
               <Award className="h-16 w-16 text-amber-600 mx-auto mb-4 animate-bounce" />
@@ -229,7 +226,6 @@ export default function ExcelCurso() {
             </div>
           )}
 
-          {/* Grid de Módulos */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {MODULES.map((module) => {
               const unlocked = isModuleUnlocked(module.id);
@@ -252,7 +248,6 @@ export default function ExcelCurso() {
                     <h3 className="text-xl font-bold text-slate-900 dark:text-white">{module.title}</h3>
                     <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{module.description}</p>
                     
-                    {/* Audio Preview - Toque Mexicano */}
                     <div className="bg-emerald-50 dark:bg-emerald-900/20 p-3 rounded-lg flex items-start gap-3 border border-emerald-100 dark:border-emerald-800">
                       <Headphones className="h-5 w-5 text-emerald-600 shrink-0" />
                       <p className="text-xs italic text-emerald-700 dark:text-emerald-400">"{module.audioText}"</p>
@@ -277,7 +272,6 @@ export default function ExcelCurso() {
           </div>
         </div>
       ) : (
-        /* BIBLIOTECA DE RECURSOS */
         <div className="grid md:grid-cols-3 gap-6 animate-in fade-in slide-in-from-bottom-4">
           <div className="md:col-span-2 space-y-6">
             <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
@@ -288,7 +282,7 @@ export default function ExcelCurso() {
                     <div className="flex items-center gap-3">
                       <FileText className="h-5 w-5 text-slate-400 group-hover:text-emerald-600" />
                       <span className="text-sm font-medium">{m.resource}</span>
-                    </div>
+                    </div
                     <Download className="h-4 w-4 text-slate-300 cursor-pointer hover:text-emerald-600" />
                   </div>
                 ))}
@@ -338,6 +332,19 @@ export default function ExcelCurso() {
           </div>
         </div>
       )}
+
+      {/* Footer Corporativo - IA ACADEMY */}
+      <footer className="pt-12 pb-6 border-t border-slate-200 dark:border-slate-700 text-center space-y-2">
+        <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">
+          © {new Date().getFullYear()} Todos los derechos reservados.
+        </p>
+        <p className="text-slate-400 dark:text-slate-500 text-xs flex items-center justify-center gap-2">
+          <span>Creado por</span> 
+          <span className="font-bold text-emerald-600 dark:text-emerald-400 tracking-widest uppercase">
+            IA Academy
+          </span>
+        </p>
+      </footer>
     </div>
   );
 }
