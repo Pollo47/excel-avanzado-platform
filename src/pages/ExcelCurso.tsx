@@ -1,9 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
-import { useExcelAuth } from '../hooks/useExcelAuth';
-import { trpc } from '../providers/trpc';
-import { BookOpen, Lock, CheckCircle, Clock, ChevronRight, Award, BarChart3, AlertTriangle } from 'lucide-react';
+import { BookOpen, Lock, CheckCircle, Clock, ChevronRight, Award, BarChart3 } from 'lucide-react';
 import { toast } from 'sonner';
 
 const MODULES = [
@@ -66,15 +63,53 @@ const MODULES = [
 ];
 
 export default function ExcelCurso() {
-  const { user } = useAuth();
-  const { isAuthorized } = useExcelAuth();
+  const [user, setUser] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [progress, setProgress] = useState<any[]>([]);
   const [showExamModal, setShowExamModal] = useState(false);
 
-  const { data: progress } = trpc.excel.getUserProgress.useQuery(undefined, {
-    enabled: !!user,
-  });
+  // Obtener usuario desde el token
+  useEffect(() => {
+    const token = localStorage.getItem('excel_token');
+    if (!token) {
+      setLoading(false);
+      return;
+    }
 
-  const completedModules = progress?.map((p) => p.moduleId) || [];
+    fetch('/api/trpc/auth.me', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data?.result?.data) {
+        setUser(data.result.data);
+      }
+      setLoading(false);
+    })
+    .catch(err => {
+      console.error('Error al obtener usuario:', err);
+      setLoading(false);
+    });
+  }, []);
+
+  // Obtener progreso del usuario
+  useEffect(() => {
+    if (!user) return;
+    const token = localStorage.getItem('excel_token');
+    
+    fetch('/api/trpc/excel.getUserProgress', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data?.result?.data) {
+        setProgress(data.result.data);
+      }
+    })
+    .catch(err => console.error('Error al obtener progreso:', err));
+  }, [user]);
+
+  const completedModules = progress?.map((p: any) => p.moduleId) || [];
   const totalModules = MODULES.length;
   const completedCount = completedModules.length;
   const progressPercent = Math.round((completedCount / totalModules) * 100);
@@ -88,20 +123,29 @@ export default function ExcelCurso() {
 
   const isModuleCompleted = (moduleId: number) => completedModules.includes(moduleId);
 
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen text-slate-600 dark:text-slate-400">
+        Cargando...
+      </div>
+    );
+  }
+
   if (!user) {
     return (
       <div className="text-center py-12">
-        <AlertTriangle className="h-16 w-16 text-amber-500 mx-auto mb-4" />
-        <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Acceso Requerido</h1>
-        <p className="text-slate-600 dark:text-slate-400 mb-6">
-          Debes iniciar sesión para acceder al curso de Excel Avanzado.
-        </p>
-        <Link
-          to="/login"
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition-colors"
-        >
-          Ingresar al Curso
-        </Link>
+        <div className="text-center py-12">
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Acceso Requerido</h1>
+          <p className="text-slate-600 dark:text-slate-400 mb-6">
+            Debes iniciar sesión para acceder al curso de Excel Avanzado.
+          </p>
+          <button
+            onClick={() => window.location.href = '/'}
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition-colors"
+          >
+            Ingresar al Curso
+          </button>
+        </div>
       </div>
     );
   }
@@ -163,7 +207,7 @@ export default function ExcelCurso() {
         </div>
       </div>
 
-      {/* Exam Button (visible when all modules completed) */}
+      {/* Exam Button */}
       {completedCount === totalModules && (
         <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-6 text-center">
           <Award className="h-12 w-12 text-amber-600 mx-auto mb-3" />
