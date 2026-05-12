@@ -37,11 +37,6 @@ export default function Login() {
     }
   };
 
-    } catch (err) {
-      setError('Error de conexión con el servidor');
-    }
-  };
-
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <form onSubmit={handleLogin} className="p-8 bg-white shadow-lg rounded-lg w-96">
