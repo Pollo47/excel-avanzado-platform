@@ -1,7 +1,7 @@
 import { Toaster } from 'sonner';
 import { useState, useEffect } from 'react';
 import Login from './pages/Login';
-import Excel from './pages/Excel'; // Asegúrate de que la ruta sea correcta
+import ExcelCurso from './pages/ExcelCurso'; // 👈 Ruta correcta según tu archivo
 
 function App() {
   const [token, setToken] = useState<string | null>(null);
@@ -17,11 +17,17 @@ function App() {
     return () => window.removeEventListener('storage', checkToken);
   }, []);
 
-  if (loading) return <div className="flex justify-center items-center h-screen">Cargando...</div>;
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen text-slate-600 dark:text-slate-400">
+        Cargando...
+      </div>
+    );
+  }
 
   return (
     <>
-      {token ? <Excel /> : <Login />}
+      {token ? <ExcelCurso /> : <Login />}
       <Toaster />
     </>
   );
