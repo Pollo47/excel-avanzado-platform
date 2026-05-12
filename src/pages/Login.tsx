@@ -15,18 +15,28 @@ export default function Login() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          input: { email, keyCode: key }
+          email: email, 
+          keyCode: key 
         }),
       });
 
       const data = await response.json();
 
       if (data.error) {
-        setError(data.error.message || 'Error al iniciar sesión');
+        // Si el error es un array (como el que viste en pantalla), sacamos el primer mensaje
+        const msg = Array.isArray(data.error) 
+          ? data.error[0]?.message 
+          : data.error.message || 'Error al iniciar sesión';
+        setError(msg);
       } else if (data.result?.data?.token) {
         localStorage.setItem('excel_token', data.result.data.token);
         navigate('/curso');
       }
+    } catch (err) {
+      setError('Error de conexión con el servidor');
+    }
+  };
+
     } catch (err) {
       setError('Error de conexión con el servidor');
     }
