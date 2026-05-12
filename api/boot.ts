@@ -1,22 +1,23 @@
 import { serve } from '@hono/node-server';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
-import { appRouter } from './routers'; 
-import { createTRPCProxyClient, httpBatchLink } from '@trpc/server';
+import { trpcServer } from '@hono/trpc-server';
+import { appRouter } from './routers';
+import { createTRPCProxyClient, httpBatchLink } from '@trpc/client'; // Cambiado a @trpc/client
 
 const app = new Hono();
 
 // 1. CORS para permitir peticiones del frontend
 app.use('/api/*', cors());
 
-// 2. Manejador de tRPC usando la respuesta HTTP estándar
-app.all('/api/trpc/*', async (c) => {
-  // tRPC v11 procesa la petición directamente usando fetchHTTPResponse
-  return await fetchHTTPResponse(appRouter, {
-    request: c.req.raw,
-    ctx: {}, // Contexto vacío, puedes añadirlo luego
-  });
-});
+// 2. Manejador de tRPC usando el middleware oficial de Hono
+app.use(
+  '/api/trpc/*',
+  trpcServer({
+    router: appRouter,
+    createContext: () => ({}), // Contexto vacío, puedes añadirlo luego
+  })
+);
 
 // 3. Health Check
 app.get('/', (c) => {
@@ -31,8 +32,8 @@ serve({
   fetch: app.fetch,
   port: Number(port),
 })
-  .then(({ port }) => {
-    console.log(`✅ Server is listening on http://localhost:${port}`);
+  .then((server) => {  // Cambiado: server en lugar de { port }
+    console.log(`✅ Server is listening on http://localhost:${server.port}`);
   })
   .catch((err) => {
     console.error('❌ Failed to start server:', err);
