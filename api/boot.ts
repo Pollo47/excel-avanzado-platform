@@ -1,51 +1,57 @@
 import { serve } from '@hono/node-server';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
-import { serveStatic } from '@hono/node-server/serve-static';
 import { trpcServer } from '@hono/trpc-server';
 import { appRouter } from './routers';
 import { readFile } from 'fs/promises';
-import { join } from 'path';
 
 const app = new Hono();
 
-// 1. CORS para permitir peticiones del frontend
+// CORS
 app.use('/api/*', cors());
 
-// 2. Manejador de tRPC usando el middleware oficial de Hono
-app.use(
-  '/api/trpc/*',
-  trpcServer({
-    router: appRouter,
-    createContext: () => ({}),
-  })
-);
-
-// 3. Servir archivos estáticos del frontend (¡NUEVO!)
-app.use('/*', serveStatic({
-  root: './dist',
-  path: (c) => {
-    // Si la ruta no tiene extensión, asumimos que es una ruta de React Router
-    if (!c.req.path.includes('.')) {
-      return 'index.html';
-    }
-    return c.req.path;
-  }
+// tRPC
+app.use('/api/trpc/*', trpcServer({
+  router: appRouter,
+  createContext: () => ({}),
 }));
 
-// 4. Health Check
-app.get('/', (c) => {
-  return c.text('Excel Academy API is running 🚀');
+// Servir frontend (versión manual)
+app.get('/*', async (c) => {
+  try {
+    // Si es un archivo estático (JS, CSS, etc.)
+    if (c.req.path.includes('.')) {
+      const file = await readFile(`./dist${c.req.path}`);
+      const ext = c.req.path.split('.').pop();
+      const contentType = {
+        'js': 'text/javascript',
+        'css': 'text/css',
+        'html': 'text/html',
+        'json': 'application/json',
+        'png': 'image/png',
+        'jpg': 'image/jpeg',
+        'svg': 'image/svg+xml',
+      };
+      return c.body(file, { headers: { 'Content-Type': contentType[ext] || 'text/plain' } });
+    }
+    
+    // Para rutas de React Router, siempre servir index.html
+    const html = await readFile('./dist/index.html', 'utf-8');
+    return c.html(html);
+  } catch (error) {
+    return c.text('File not found', 404);
+  }
 });
 
-// 5. Arranque del servidor
-const port = process.env.PORT || 10000;
+// Health check
+app.get('/health', (c) => c.text('OK'));
 
+const port = process.env.PORT || 10000;
 console.log(`🚀 Server starting on port ${port}...`);
 
 serve({
   fetch: app.fetch,
   port: Number(port),
 }, (info) => {
-  console.log(`✅ Server is listening on http://localhost:${info.port}`);
+  console.log(`✅ Server listening on http://localhost:${info.port}`);
 });
