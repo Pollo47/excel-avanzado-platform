@@ -7,47 +7,48 @@ import { readFile } from 'fs/promises';
 
 const app = new Hono();
 
-// 1. CORS (solo API)
-app.use('/api/*', cors());
+// 1. CORS
+app.use('*', cors());
 
-// 2. tRPC (DEBE IR ANTES del frontend)
-app.use('/api/trpc/*', trpcServer({
+// 2. tRPC API (todas las rutas que empiezan con /api)
+app.route('/api/trpc', trpcServer({
   router: appRouter,
   createContext: () => ({}),
 }));
 
-// 3. Health check (también antes)
+// 3. Health check
 app.get('/health', (c) => c.text('OK'));
 
-// 4. Servir frontend (SOLO para rutas que NO son API)
-app.get('/*', async (c) => {
-  // No interfieras con las rutas de API
+// 4. Servir archivos estáticos del frontend solo si no es API
+app.get('*', async (c) => {
+  // Si la ruta empieza con /api, no la manejamos aquí
   if (c.req.path.startsWith('/api')) {
-    return c.text('Not found', 404);
+    return c.text('API endpoint not found', 404);
   }
   
   try {
-    // Si es un archivo estático (JS, CSS, etc.)
-    if (c.req.path.includes('.')) {
-      const file = await readFile(`./dist${c.req.path}`);
-      const ext = c.req.path.split('.').pop();
-      const contentType: Record<string, string> = {
-        'js': 'text/javascript',
-        'css': 'text/css',
-        'html': 'text/html',
-        'json': 'application/json',
-        'png': 'image/png',
-        'jpg': 'image/jpeg',
-        'svg': 'image/svg+xml',
-      };
-      return c.body(file, { headers: { 'Content-Type': contentType[ext] || 'text/plain' } });
-    }
-    
-    // Para rutas de React Router, siempre servir index.html
-    const html = await readFile('./dist/index.html', 'utf-8');
-    return c.html(html);
+    // Intentar servir archivos estáticos desde dist
+    const filePath = c.req.path === '/' ? '/index.html' : c.req.path;
+    const file = await readFile(`./dist${filePath}`);
+    const ext = filePath.split('.').pop();
+    const contentType: Record<string, string> = {
+      'js': 'text/javascript',
+      'css': 'text/css',
+      'html': 'text/html',
+      'json': 'application/json',
+      'png': 'image/png',
+      'jpg': 'image/jpeg',
+      'svg': 'image/svg+xml',
+    };
+    return c.body(file, { headers: { 'Content-Type': contentType[ext] || 'text/plain' } });
   } catch (error) {
-    return c.text('File not found', 404);
+    // Si el archivo no existe, servir index.html para SPA
+    try {
+      const html = await readFile('./dist/index.html', 'utf-8');
+      return c.html(html);
+    } catch {
+      return c.text('Frontend not built yet', 404);
+    }
   }
 });
 
