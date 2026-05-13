@@ -15,7 +15,7 @@ const MODULE_CONTENT: Record<number, { title: string; units: { id: number; title
           { content: 'El secreto de los expertos no es el conocimiento de cada botón, sino la velocidad. Dominar atajos como Ctrl+T para tablas o Ctrl+L para buscar es lo que separa a un usuario promedio de un analista de élite.' },
         ],
         exercise: { title: 'Reto de Configuración', description: 'Crea un libro nuevo y configura una tabla de datos. Aplica el formato de "Tabla de Excel" y cambia el estilo a uno corporativo.', hint: 'Usa el atajo Ctrl+T y luego la pestaña Diseño de Tabla.' },
-        quiz: [{ question: '¿Cuál es la función de la Barra de Fórmulas?', options: ['Solo ver el resultado', 'Editar el contenido y la lógica de la celda', 'Cambiar el color de la fuente', 'Ninguna'], correctAnswer: 1, explanation own: 'Permite ver y editar la fórmula exacta que genera el valor de la celda.' }],
+        quiz: [{ question: '¿Cuál es la función de la Barra de Fórmulas?', options: ['Solo ver el resultado', 'Editar el contenido y la lógica de la celda', 'Cambiar el color de la fuente', 'Ninguna'], correctAnswer: 1, explanation: 'Permite ver y editar la fórmula exacta que genera el valor de la celda.' }],
       },
     ],
   },
@@ -34,7 +34,7 @@ const MODULE_CONTENT: Record<number, { title: string; units: { id: number; title
         id: 2,
         title: 'Búsquedas Avanzadas (XLOOKUP)',
         paragraphs: [
-          { content: 'Olvídate del BUSCARV. El nuevo XLOOKUP es más potente, flexible y no se rompe si insertas columnas. Aprenderás a buscar datos en cualquier dirección y a manejar errores con el argumento "if_not_found".' },
+          { content: 'Olvídate del BUSCARV. El nuevo XLOOKUP es más potente, flexible y no se rompe si insertas columnas. Aprenderás a buscar datos en cualquier dirección.' },
         ],
       }
     ],
@@ -46,7 +46,7 @@ const MODULE_CONTENT: Record<number, { title: string; units: { id: number; title
         id: 1,
         title: 'El Poder del Resumen',
         paragraphs: [
-          { content: 'Las Tablas Dinámicas son el corazón del análisis de datos. Te permiten convertir 10,000 filas de ventas en un reporte de 3 líneas que muestra la rentabilidad por región.' },
+          { content: 'Las Tablas Dinámicas son el corazón del análisis de datos. Te permiten convertir 10,000 filas de ventas en un reporte de 3 líneas.' },
         ],
         exercise: { title: 'Reto de Análisis', description: 'Importa una base de datos de ventas y crea una tabla dinámica que muestre el total de ventas por vendedor.', hint: 'Arrastra "Vendedor" a Filas y "Venta" a Valores.' },
       }
@@ -59,9 +59,9 @@ const MODULE_CONTENT: Record<number, { title: string; units: { id: number; title
         id: 1,
         title: 'Storytelling con Datos',
         paragraphs: [
-          { content own: 'Un Dashboard no es un montón de gráficos; es una historia. Aprenderás la psicología del color y la jerarquía visual para que tu jefe entienda el KPI principal en menos de 5 segundos.' },
+          { content: 'Un Dashboard no es un montón de gráficos; es una historia. Aprenderás la psicología del color y la jerarquía visual.' },
         ],
-        exercise: { title: 'Diseño de KPI', description: 'Crea un gráfico de velocímetro o una barra de progreso para medir el cumplimiento de una meta de ventas.', hint: 'Usa gráficos combinados o formato condicional en celdas.' },
+        exercise: { title: 'Diseño de KPI', description: 'Crea un gráfico de velocímetro o una barra de progreso para medir el cumplimiento de una meta.', hint: 'Usa gráficos combinados.' },
       }
     ],
   },
@@ -74,7 +74,7 @@ const MODULE_CONTENT: Record<number, { title: string; units: { id: number; title
         paragraphs: [
           { content: 'VBA es el lenguaje que permite que Excel piense por ti. Aprenderás a crear macros que realicen tareas de 3 horas en solo 2 segundos.' },
         ],
-        exercise: { title: 'Mi Primera Macro', description: 'Crea un botón que, al presionarlo, limpie todos los datos de un formulario y prepare la hoja para una nueva entrada.', hint: 'Usa la Grabadora de Macros y luego revisa el código en Alt+F11.' },
+        exercise: { title: 'Mi Primera Macro', description: 'Crea un botón que, al presionarlo, limpie todos los datos de un formulario.', hint: 'Usa la Grabadora de Macros y luego revisa el código en Alt+F11.' },
       }
     ],
   },
@@ -85,9 +85,9 @@ const MODULE_CONTENT: Record<number, { title: string; units: { id: number; title
         id: 1,
         title: 'Conexión y Limpieza',
         paragraphs: [
-          { content: 'Power Query es la herramienta más poderosa para limpiar datos. Aprenderás a combinar 12 archivos mensuales en una sola tabla maestra sin copiar y pegar manualmente.' },
+          { content: 'Power Query es la herramienta más poderosa para limpiar datos. Aprenderás a combinar múltiples archivos en una sola tabla maestra.' },
         ],
-        exercise: { title: 'Consolidación de Archivos', description: 'Conecta una carpeta que contenga 3 archivos CSV y unifica la información en una sola consulta.', hint: 'Datos -> Obtener Datos -> De una carpeta.' },
+        exercise: { title: 'Consolidación', description: 'Conecta una carpeta que contenga 3 archivos CSV y unifica la información.', hint: 'Datos -> Obtener Datos -> De una carpeta.' },
       }
     ],
   },
@@ -98,9 +98,9 @@ const MODULE_CONTENT: Record<number, { title: string; units: { id: number; title
         id: 1,
         title: 'Modelado y Lenguaje DAX',
         paragraphs: [
-          { content: 'Llegamos a la cima. Power BI lleva el análisis a la nube. Aprenderás DAX, el lenguaje de fórmulas avanzado para crear medidas calculadas complejas.' },
+          { content own: 'Llegamos a la cima. Power BI lleva el análisis a la nube. Aprenderás DAX, el lenguaje de fórmulas avanzado.' },
         ],
-        exercise: { title: 'Reporte de BI', description: 'Crea un modelo de datos relacionando una tabla de Ventas con una de Clientes y genera una medida de "Ventas Totales" usando SUMX.', hint: 'Usa la vista de modelo para crear la relación 1:N.' },
+        exercise: { title: 'Reporte de BI', description: 'Crea un modelo de datos relacionando una tabla de Ventas con una de Clientes.', hint: 'Usa la vista de modelo para crear la relación 1:N.' },
       }
     ],
   },
@@ -145,12 +145,12 @@ export default function ExcelModule() {
   return (
     <div className="max-w-5xl mx-auto space-y-6 pb-20">
       <div className="flex items-center gap-3 text-sm text-slate-500 font-medium">
-        <Link to="/curso" className="hover:text-emerald-600 flex items-center gap-1"><ArrowLeft className="h-4 w-4" /> Volver al tablero</Link>
+        <Link to="/curso" className="hover:text-emerald-600 flex items-center gap-1"><ArrowLeft className="h-4 w-4" /> Volver</Link>
         <span className="text-slate-300">/</span>
         <span className="text-slate-900 dark:text-white">Módulo {moduleNum}</span>
       </div>
 
-      <div className="bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm relative overflow-hidden">
+      <div className="bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm">
         <div className="flex items-center gap-3 mb-4">
           <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold uppercase tracking-widest">Unidad {currentUnit + 1} de {moduleData.units.length}</span>
         </div>
