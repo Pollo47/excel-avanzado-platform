@@ -7,10 +7,10 @@ const MODULES = [
   { id: 1, title: 'Fundamentos de Excel Pro', description: 'Interfaz, celdas, rangos y los atajos que te harán volar en la oficina.', image: '/images/modules/1_fundamentos.png', duration: '4 horas', lessons: 12, audioText: "¡Qué onda! Iniciamos con lo básico pero indispensable.", resource: "Guía de Atajos Rápidos PDF" },
   { id: 2, title: 'Maestría en Fórmulas', description: 'Desde el BUSCARV clásico hasta el potente XLOOKUP y funciones anidadas.', image: '/images/modules/2_formulas.png', duration: '6 horas', lessons: 18, audioText: "Aquí es donde sucede la magia de la lógica.", resource: "Diccionario de Funciones" },
   { id: 3, title: 'Tablas Dinámicas', description: 'Transforma miles de filas en reportes ejecutivos en segundos.', image: '/images/modules/3_tablas_dinamicas.png', duration: '5 horas', lessons: 14, audioText: "Olvídate de sumar a mano, automatiza tus reportes.", resource: "Plantilla de Reporte" },
-  { id: 4, title: 'Dashboards de Impacto', description: 'Crea tableros visuales que cuenten una historia y faciliten decisiones.', image: '/images/modules/4_graficos.png', duration: '4 horas', lessons: 10, audioText으로: "Un dato sin diseño es solo un número.", resource: "Paleta de Colores" },
+  { id: 4, title: 'Dashboards de Impacto', description: 'Crea tableros visuales que cuenten una historia y faciliten decisiones.', image: '/images/modules/4_graficos.png', duration: '4 horas', lessons: 10, audioText: "Un dato sin diseño es solo un número.", resource: "Paleta de Colores" },
   { id: 5, title: 'Macros y VBA', description: 'Crea tus propios botones y automatiza tareas repetitivas.', image: '/images/modules/5_vba.png', duration: '8 horas', lessons: 20, audioText: "Llegamos a las ligas mayores. Programa tu éxito.", resource: "Cheat Sheet VBA" },
   { id: 6, title: 'Power Query (ETL)', description: 'Limpia, transforma y combina datos de múltiples fuentes sin errores.', image: '/images/modules/6_power_query.png', duration: '5 horas', lessons: 12, audioText: "Limpia tus datos en segundos, no en horas.", resource: "Guía de Conectores" },
-  { id: 7, title: 'Power BI Ejecutivo', description own: 'Modelado DAX, relaciones de datos y publicación en la nube.', image: '/images/modules/7_powerbi.png', duration: '10 horas', lessons: 24, audioText: "El cierre maestro. Business Intelligence real.", resource: "Manual DAX" },
+  { id: 7, title: 'Power BI Ejecutivo', description: 'Modelado DAX, relaciones de datos y publicación en la nube.', image: '/images/modules/7_powerbi.png', duration: '10 horas', lessons: 24, audioText: "El cierre maestro. Business Intelligence real.", resource: "Manual DAX" },
 ];
 
 export default function ExcelCurso() {
@@ -49,7 +49,7 @@ export default function ExcelCurso() {
 
   return (
     <div className="max-w-7xl mx-auto space-y-8 pb-12">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-100 dark:border-slate-800">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm">
         <div className="space-y-1">
           <h1 className="text-3xl font-black text-slate-900 dark:text-white flex items-center gap-3">
             <BookOpen className="h-8 w-8 text-emerald-600" /> IA Academy
@@ -131,23 +131,23 @@ export default function ExcelCurso() {
                 ))}
               </div>
             </div>
-          </div_>
+          </div>
           <div className="space-y-6">
             <div className="bg-emerald-600 text-white p-6 rounded-3xl shadow-lg">
               <h3 className="font-bold mb-2">Soporte IA Academy</h3>
               <p className="text-xs text-emerald-100 mb-4">¿Tienes dudas con un ejercicio?</p>
               <button className="w-full py-2 bg-white text-emerald-600 rounded-xl font-bold text-xs">Soporte Técnico</button>
-            </div_>
+            </div>
             <div className="bg-slate-900 text-white p-6 rounded-3xl border border-slate-800">
               <h3 className="font-bold mb-4 flex items-center gap-2"><Award className="text-amber-400" /> Ranking</h3>
               <div className="space-y-2">
                 <div className="flex justify-between text-xs p-2 bg-slate-800 rounded"><span>1. Juan Pérez</span> <span className="text-emerald-400">100%</span></div>
                 <div className="flex justify-between text-xs p-2 bg-slate-800 rounded"><span>2. María G.</span> <span className="text-emerald-400">95%</span></div>
                 <div className="flex justify-between text-xs p-2 bg-slate-800 rounded"><span>3. Tú</span> <span className="text-emerald-400">{progressPercent}%</span></div>
-              </div_>
-            </div_>
-          </div_>
-        </div_>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
 
       <footer className="pt-12 text-center space-y-2 border-t border-slate-100 dark:border-slate-800">
