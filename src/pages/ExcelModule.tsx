@@ -11,20 +11,12 @@ const MODULE_CONTENT: Record<number, { title: string; units: { id: number; title
         id: 1,
         title: 'Arquitectura de la Interfaz',
         paragraphs: [
-          { content: 'Bienvenido a IA Academy. Para dominar Excel, primero debemos entender su anatomía. La cuadrícula es la base, pero la Cinta de Opciones (Ribbon) es donde reside el poder. Aprenderás a personalizarla para que las herramientas que más usas estén a un solo clic.' },
+          { content: 'Bienvenido a IA Academy. Para dominar Excel, primero debemos entender su anatomía. La cuadrícula es la base, pero la Cinta de Opciones (Ribbon) es donde reside el poder.' },
           { content: 'El secreto de los expertos no es el conocimiento de cada botón, sino la velocidad. Dominar atajos como Ctrl+T para tablas o Ctrl+L para buscar es lo que separa a un usuario promedio de un analista de élite.' },
         ],
         exercise: { title: 'Reto de Configuración', description: 'Crea un libro nuevo y configura una tabla de datos. Aplica el formato de "Tabla de Excel" y cambia el estilo a uno corporativo.', hint: 'Usa el atajo Ctrl+T y luego la pestaña Diseño de Tabla.' },
-        quiz: [{ question: '¿Cuál es la función de la Barra de Fórmulas?', options: ['Solo ver el resultado', 'Editar el contenido y la lógica de la celda', 'Cambiar el color de la fuente', 'Ninguna'], correctAnswer: 1, explanation: 'Permite ver y editar la fórmula exacta que genera el valor de la celda.' }],
+        quiz: [{ question: '¿Cuál es la función de la Barra de Fórmulas?', options: ['Solo ver el resultado', 'Editar el contenido y la lógica de la celda', 'Cambiar el color de la fuente', 'Ninguna'], correctAnswer: 1, explanation own: 'Permite ver y editar la fórmula exacta que genera el valor de la celda.' }],
       },
-      {
-        id: 2,
-        title: 'Gestión de Datos y Formatos',
-        paragraphs: [
-          { content: 'El formato no es solo estética; es comunicación. Aprenderás la diferencia entre el formato de Moneda y Contabilidad, y cómo usar el formato condicional para que los datos "hablen" solos.' },
-        ],
-        exercise: { title: 'Reto de Formatos', description: 'Crea una lista de precios y haz que los valores negativos se marquen automáticamente en rojo.', hint: 'Usa Formato Condicional -> Reglas para resaltar celdas.' },
-      }
     ],
   },
   2: {
@@ -41,7 +33,9 @@ const MODULE_CONTENT: Record<number, { title: string; units: { id: number; title
       {
         id: 2,
         title: 'Búsquedas Avanzadas (XLOOKUP)',
- la la la la content: 'Olvídate del BUSCARV. El nuevo XLOOKUP es más potente, flexible y no se rompe si insertas columnas. Aprenderás a buscar datos en cualquier dirección y a manejar errores con el argumento "if_not_found".' },
+        paragraphs: [
+          { content: 'Olvídate del BUSCARV. El nuevo XLOOKUP es más potente, flexible y no se rompe si insertas columnas. Aprenderás a buscar datos en cualquier dirección y a manejar errores con el argumento "if_not_found".' },
+        ],
       }
     ],
   },
@@ -65,7 +59,7 @@ const MODULE_CONTENT: Record<number, { title: string; units: { id: number; title
         id: 1,
         title: 'Storytelling con Datos',
         paragraphs: [
-          { content: 'Un Dashboard no es un montón de gráficos; es una historia. Aprenderás la psicología del color y la jerarquía visual para que tu jefe entienda el KPI principal en menos de 5 segundos.' },
+          { content own: 'Un Dashboard no es un montón de gráficos; es una historia. Aprenderás la psicología del color y la jerarquía visual para que tu jefe entienda el KPI principal en menos de 5 segundos.' },
         ],
         exercise: { title: 'Diseño de KPI', description: 'Crea un gráfico de velocímetro o una barra de progreso para medir el cumplimiento de una meta de ventas.', hint: 'Usa gráficos combinados o formato condicional en celdas.' },
       }
@@ -215,7 +209,7 @@ export default function ExcelModule() {
 
           <button onClick={() => { if(currentUnit === moduleData.units.length - 1) completeModule(); else setCurrentUnit(currentUnit + 1); }} className="w-full py-4 bg-emerald-600 text-white rounded-3xl font-black text-lg shadow-lg shadow-emerald-500/40 hover:bg-emerald-700 transition-all flex items-center justify-center gap-2">
             {currentUnit === moduleData.units.length - 1 ? <Award className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
-            {currentUnit === moduleData.units.length - 1 ? 'Certificar Módulo' : 'Siguiente Unidad'}
+            {currentUnit === moduleData.units.length - 1 ? 'Certificar' : 'Siguiente'}
           </button>
         </div>
       </div>
