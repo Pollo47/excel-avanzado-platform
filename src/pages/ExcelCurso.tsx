@@ -282,7 +282,7 @@ export default function ExcelCurso() {
                     <div className="flex items-center gap-3">
                       <FileText className="h-5 w-5 text-slate-400 group-hover:text-emerald-600" />
                       <span className="text-sm font-medium">{m.resource}</span>
-                    </div
+                    </div>
                     <Download className="h-4 w-4 text-slate-300 cursor-pointer hover:text-emerald-600" />
                   </div>
                 ))}
@@ -333,7 +333,6 @@ export default function ExcelCurso() {
         </div>
       )}
 
-      {/* Footer Corporativo - IA ACADEMY */}
       <footer className="pt-12 pb-6 border-t border-slate-200 dark:border-slate-700 text-center space-y-2">
         <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">
           © {new Date().getFullYear()} Todos los derechos reservados.
@@ -342,7 +341,7 @@ export default function ExcelCurso() {
           <span>Creado por</span> 
           <span className="font-bold text-emerald-600 dark:text-emerald-400 tracking-widest uppercase">
             IA Academy
-          </span>
+          </span
         </p>
       </footer>
     </div>
