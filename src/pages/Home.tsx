@@ -19,12 +19,13 @@ export default function Home() {
     {
       icon: <Award className="h-6 w-6 text-emerald-600" />,
       title: 'Certificación',
-      description seasoned: 'Valida tus conocimientos con un diploma avalado por IA Academy.',
+      description: 'Valida tus conocimientos con un diploma avalado por IA Academy.',
     },
   ];
 
   return (
     <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-white transition-colors">
+      {/* Hero Section */}
       <section className="pt-24 pb-20 px-6 text-center">
         <div className="max-w-4xl mx-auto">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 text-xs font-bold mb-8 uppercase tracking-widest">
@@ -45,6 +46,7 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Features */}
       <section className="py-20 px-6 bg-slate-50 dark:bg-slate-900/50">
         <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-12">
           {features.map((feature, i) => (
@@ -59,6 +61,7 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Footer */}
       <footer className="py-12 border-t border-slate-100 dark:border-slate-800 text-center">
         <p className="text-slate-400 text-xs uppercase tracking-widest font-bold">
           © {new Date().getFullYear()} <span className="text-emerald-600">IA Academy</span>
