@@ -341,7 +341,7 @@ export default function ExcelCurso() {
           <span>Creado por</span> 
           <span className="font-bold text-emerald-600 dark:text-emerald-400 tracking-widest uppercase">
             IA Academy
-          </span
+          </span>
         </p>
       </footer>
     </div>
