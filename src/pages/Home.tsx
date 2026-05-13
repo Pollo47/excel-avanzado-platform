@@ -59,8 +59,8 @@ export default function Home() {
             <Link to="#features" className="px-8 py-4 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-2xl font-bold text-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all">
               Ver Plan de Estudios
             </Link>
-          </div_>
-        </div_>
+          </div>
+        </div>
       </section>
 
       {/* Features Grid */}
