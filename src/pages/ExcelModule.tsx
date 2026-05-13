@@ -9,14 +9,105 @@ const MODULE_CONTENT: Record<number, { title: string; units: { id: number; title
     units: [
       {
         id: 1,
-        title: 'Interfaz de Alto Rendimiento',
+        title: 'Arquitectura de la Interfaz',
         paragraphs: [
-          { content: 'Bienvenido a IA Academy. Excel no es solo una hoja de cálculo, es la base de la inteligencia de negocios. Para dominarlo, primero debemos entender la anatomía de la interfaz.' },
-          { content: 'La clave de la productividad no está en saber dónde están los botones, sino en dominar los atajos. Un experto minimiza el uso del mouse.' },
+          { content: 'Bienvenido a IA Academy. Para dominar Excel, primero debemos entender su anatomía. La cuadrícula es la base, pero la Cinta de Opciones (Ribbon) es donde reside el poder. Aprenderás a personalizarla para que las herramientas que más usas estén a un solo clic.' },
+          { content: 'El secreto de los expertos no es el conocimiento de cada botón, sino la velocidad. Dominar atajos como Ctrl+T para tablas o Ctrl+L para buscar es lo que separa a un usuario promedio de un analista de élite.' },
         ],
-        exercise: { title: 'Reto de Agilidad', description: 'Crea un libro y organiza una tabla de 5 columnas. Aplica formatos condicionales.', hint: 'Usa la pestaña Inicio -> Formato Condicional.' },
-        quiz: [{ question: '¿Cuál es la función principal de la Cinta de Opciones?', options: ['Solo guardar', 'Organizar comandos por pestañas', 'Cambiar color', 'Ninguna'], correctAnswer: 1, explanation: 'El Ribbon organiza las herramientas por categorías.' }],
+        exercise: { title: 'Reto de Configuración', description: 'Crea un libro nuevo y configura una tabla de datos. Aplica el formato de "Tabla de Excel" y cambia el estilo a uno corporativo.', hint: 'Usa el atajo Ctrl+T y luego la pestaña Diseño de Tabla.' },
+        quiz: [{ question: '¿Cuál es la función de la Barra de Fórmulas?', options: ['Solo ver el resultado', 'Editar el contenido y la lógica de la celda', 'Cambiar el color de la fuente', 'Ninguna'], correctAnswer: 1, explanation: 'Permite ver y editar la fórmula exacta que genera el valor de la celda.' }],
       },
+      {
+        id: 2,
+        title: 'Gestión de Datos y Formatos',
+        paragraphs: [
+          { content: 'El formato no es solo estética; es comunicación. Aprenderás la diferencia entre el formato de Moneda y Contabilidad, y cómo usar el formato condicional para que los datos "hablen" solos.' },
+        ],
+        exercise: { title: 'Reto de Formatos', description: 'Crea una lista de precios y haz que los valores negativos se marquen automáticamente en rojo.', hint: 'Usa Formato Condicional -> Reglas para resaltar celdas.' },
+      }
+    ],
+  },
+  2: {
+    title: 'Maestría en Fórmulas y Funciones',
+    units: [
+      {
+        id: 1,
+        title: 'Lógica de Referencias',
+        paragraphs: [
+          { content: 'La diferencia entre una referencia relativa (A1) y una absoluta ($A$1) es la base de la automatización. Si no dominas los signos de peso, tus fórmulas se romperán al arrastrarlas.' },
+        ],
+        exercise: { title: 'Reto de Referencias', description: 'Crea una tabla de multiplicar donde la fila y la columna estén fijas usando referencias absolutas.', hint: 'Usa F4 para poner los signos de $ rápidamente.' },
+      },
+      {
+        id: 2,
+        title: 'Búsquedas Avanzadas (XLOOKUP)',
+ la la la la content: 'Olvídate del BUSCARV. El nuevo XLOOKUP es más potente, flexible y no se rompe si insertas columnas. Aprenderás a buscar datos en cualquier dirección y a manejar errores con el argumento "if_not_found".' },
+      }
+    ],
+  },
+  3: {
+    title: 'Tablas Dinámicas y Análisis',
+    units: [
+      {
+        id: 1,
+        title: 'El Poder del Resumen',
+        paragraphs: [
+          { content: 'Las Tablas Dinámicas son el corazón del análisis de datos. Te permiten convertir 10,000 filas de ventas en un reporte de 3 líneas que muestra la rentabilidad por región.' },
+        ],
+        exercise: { title: 'Reto de Análisis', description: 'Importa una base de datos de ventas y crea una tabla dinámica que muestre el total de ventas por vendedor.', hint: 'Arrastra "Vendedor" a Filas y "Venta" a Valores.' },
+      }
+    ],
+  },
+  4: {
+    title: 'Dashboards de Impacto',
+    units: [
+      {
+        id: 1,
+        title: 'Storytelling con Datos',
+        paragraphs: [
+          { content: 'Un Dashboard no es un montón de gráficos; es una historia. Aprenderás la psicología del color y la jerarquía visual para que tu jefe entienda el KPI principal en menos de 5 segundos.' },
+        ],
+        exercise: { title: 'Diseño de KPI', description: 'Crea un gráfico de velocímetro o una barra de progreso para medir el cumplimiento de una meta de ventas.', hint: 'Usa gráficos combinados o formato condicional en celdas.' },
+      }
+    ],
+  },
+  5: {
+    title: 'Automatización con Macros y VBA',
+    units: [
+      {
+        id: 1,
+        title: 'Introducción al Editor de VBA',
+        paragraphs: [
+          { content: 'VBA es el lenguaje que permite que Excel piense por ti. Aprenderás a crear macros que realicen tareas de 3 horas en solo 2 segundos.' },
+        ],
+        exercise: { title: 'Mi Primera Macro', description: 'Crea un botón que, al presionarlo, limpie todos los datos de un formulario y prepare la hoja para una nueva entrada.', hint: 'Usa la Grabadora de Macros y luego revisa el código en Alt+F11.' },
+      }
+    ],
+  },
+  6: {
+    title: 'Power Query (ETL)',
+    units: [
+      {
+        id: 1,
+        title: 'Conexión y Limpieza',
+        paragraphs: [
+          { content: 'Power Query es la herramienta más poderosa para limpiar datos. Aprenderás a combinar 12 archivos mensuales en una sola tabla maestra sin copiar y pegar manualmente.' },
+        ],
+        exercise: { title: 'Consolidación de Archivos', description: 'Conecta una carpeta que contenga 3 archivos CSV y unifica la información en una sola consulta.', hint: 'Datos -> Obtener Datos -> De una carpeta.' },
+      }
+    ],
+  },
+  7: {
+    title: 'Power BI Ejecutivo',
+    units: [
+      {
+        id: 1,
+        title: 'Modelado y Lenguaje DAX',
+        paragraphs: [
+          { content: 'Llegamos a la cima. Power BI lleva el análisis a la nube. Aprenderás DAX, el lenguaje de fórmulas avanzado para crear medidas calculadas complejas.' },
+        ],
+        exercise: { title: 'Reporte de BI', description: 'Crea un modelo de datos relacionando una tabla de Ventas con una de Clientes y genera una medida de "Ventas Totales" usando SUMX.', hint: 'Usa la vista de modelo para crear la relación 1:N.' },
+      }
     ],
   },
 };
@@ -59,15 +150,15 @@ export default function ExcelModule() {
 
   return (
     <div className="max-w-5xl mx-auto space-y-6 pb-20">
-      <div className="flex items-center gap-3 text-sm text-slate-500">
-        <Link to="/curso" className="hover:text-emerald-600 flex items-center gap-1"><ArrowLeft className="h-4 w-4" /> Volver</Link>
+      <div className="flex items-center gap-3 text-sm text-slate-500 font-medium">
+        <Link to="/curso" className="hover:text-emerald-600 flex items-center gap-1"><ArrowLeft className="h-4 w-4" /> Volver al tablero</Link>
         <span className="text-slate-300">/</span>
         <span className="text-slate-900 dark:text-white">Módulo {moduleNum}</span>
       </div>
 
-      <div className="bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm">
+      <div className="bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm relative overflow-hidden">
         <div className="flex items-center gap-3 mb-4">
-          <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold uppercase">Unidad {currentUnit + 1}</span>
+          <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold uppercase tracking-widest">Unidad {currentUnit + 1} de {moduleData.units.length}</span>
         </div>
         <h1 className="text-3xl font-black text-slate-900 dark:text-white">{moduleData.title}</h1>
         <p className="text-slate-500 font-medium">{unit.title}</p>
@@ -94,7 +185,7 @@ export default function ExcelModule() {
               </div>
               <p className="text-slate-800 dark:text-slate-200 mb-6 text-lg">{unit.exercise.description}</p>
               <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-amber-100 dark:border-amber-800 text-sm text-slate-600 italic">
-                <strong>Pro Tip:</strong> {unit.exercise.hint}
+                <strong className="text-amber-600">Sugerencia:</strong> {unit.exercise.hint}
               </div>
             </div>
           )}
@@ -117,14 +208,14 @@ export default function ExcelModule() {
                     </div>
                   </div>
                 ))}
-                <button onClick={() => { setQuizSubmitted(true); toast.success("Enviado"); }} className="w-full py-3 bg-emerald-600 text-white rounded-xl font-bold text-sm">Enviar</button>
+                <button onClick={() => { setQuizSubmitted(true); toast.success("Enviado"); }} className="w-full py-3 bg-emerald-600 text-white rounded-xl font-bold text-sm">Enviar Respuestas</button>
               </div>
             )}
           </div>
 
           <button onClick={() => { if(currentUnit === moduleData.units.length - 1) completeModule(); else setCurrentUnit(currentUnit + 1); }} className="w-full py-4 bg-emerald-600 text-white rounded-3xl font-black text-lg shadow-lg shadow-emerald-500/40 hover:bg-emerald-700 transition-all flex items-center justify-center gap-2">
             {currentUnit === moduleData.units.length - 1 ? <Award className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
-            {currentUnit === moduleData.units.length - 1 ? 'Certificar' : 'Siguiente'}
+            {currentUnit === moduleData.units.length - 1 ? 'Certificar Módulo' : 'Siguiente Unidad'}
           </button>
         </div>
       </div>
